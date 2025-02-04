@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres ser mi San Valentín?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos CSS */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('Ekko.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        @keyframes fondoAnimado {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .password-screen, .container, .dedication-screen {
+            text-align: center;
+            background-color: #0E1117;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            margin: 20px;
+            position: absolute;
+            transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+        }
+
+        .password-screen h1, .container h1, .dedication-screen h1 {
+            color: #E5E9F0;
+            margin-bottom: 20px;
+            animation: aparecer 2s ease-in-out;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .password-screen button, .romantic-buttons button, .dedication-button {
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            color: #E5E9F0;
+            background-color: #536878;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: latido 1.5s infinite;
+        }
+
+        .password-screen button:hover, .romantic-buttons button:hover, .dedication-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes latido {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .error-message {
+            color: #E5E9F0  ;
+            font-weight: bold;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .container h1 {
+            color: #E5E9F0;
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: escribir 3s steps(40, end);
+        }
+
+        @keyframes escribir {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        .heart {
+            font-size: 50px;
+            animation: latido 1s infinite;
+        }
+
+        .gif-container img {
+            max-width: 30%;
+            border-radius: 10px;
+        }
+
+        .romantic-buttons #noBtn {
+            background-color: #536878           ;
+            color: #E5E9F0;
+        }
+
+        .background-gif {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('gatosad.gif') no-repeat center center;
+            background-size: cover;
+            z-index: 9999;
+            display: none;
+        }
+
+        .background-gif-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            display: none;
+            font-family: Arial, sans-serif; /* Cambiar la fuente a Arial */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        .fade-out {
+            animation: fadeOut 1.5s forwards;
+            pointer-events: none; /* Evita que el botón sea clickeable durante la animación */
+        }
+
+        .hidden-completely {
+            display: none !important;
+        }
+
+        .romantic-text {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2em;
+            color: #E5E9F0;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .thank-you-text {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.5em;
+            color: #E5E9F0;
+            max-width: 600px;
+            line-height: 1.5;
+            font-weight: bold; /* Hacer el texto en negrita */
+        }
+
+        .dedication-screen {
+            display: none;
+        }
+
+        .slide-left {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .slide-right {
+            display: block;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .dedication-content {
+            margin-top: 20px;
+        }
+
+        .dedication-photo {
+            margin-top: 20px;
+        }
+
+        .video-container {
+            display: none; /* Ocultar inicialmente */
+            position: fixed;
+            top: 50%; /* Centrar verticalmente */
+            right: -600px; /* Posición inicial fuera de la pantalla (derecha) */
+            transform: translateY(-50%); /* Centrar verticalmente */
+            width: 550px; /* Aumentar el ancho */
+            height: 310px; /* Aumentar la altura */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: right 2s ease-in-out; /* Animación de movimiento */
+        }
+
+        .video-container.show {
+            display: block; /* Mostrar cuando se agrega la clase 'show' */
+        }
+
+        .move-left {
+            transform: translateX(-75%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de contraseña -->
+    <div id="passwordScreen" class="password-screen">
+        <h1>¿Cuál es la fecha de nuestro aniversario?</h1>
+        <div>
+            <button onclick="checkPassword('01/01/2023')">01/01/2023</button>
+            <button onclick="checkPassword('14/02/2023')">14/02/2023</button>
+            <button onclick="checkPassword('25/12/2023')">25/12/2023</button>
+        </div>
+        <p id="errorMessage" class="error-message hidden">¡Oops! Esa no es la fecha correcta.</p>
+    </div>
+
+    <!-- Pantalla romántica (oculta inicialmente) -->
+    <div id="romanticScreen" class="container hidden">
+        <h1 id="greetingText">Hola gordita</h1>
+        <p id="proposalText" class="romantic-text">
+            San Valentín y nuestro aniversario en un solo día... 
+            no puedo imaginar mejor motivo para pedirte que compartamos este momento inolvidable, 
+            ¿aceptarías?
+        </p>
+        <div class="heart">❤️</div>
+        <div class="romantic-buttons">
+            <button id="siBtn">¡Sí!</button>
+            <button id="noBtn">No</button>
+        </div>
+        <div id="respuesta" class="hidden fade-in">
+            <p style="color: #E5E9F0;">¡Sabía que dirías que sí! 💖</p>
+            <div class="gif-container">
+                <img src="teamochikibeibi.gif" alt="GIF romántico">
+            </div>
+            <p id="thankYouText" class="thank-you-text hidden-completely">
+                Gracias por ser parte de mi vida, una vez más. Te amo.
+            </p>
+            <button id="dedicationBtn" class="dedication-button hidden-completely">Cliquea aquí mi amor</button>
+        </div>
+    </div>
+
+    <!-- Pantalla de dedicatoria (oculta inicialmente) -->
+    <div id="dedicationScreen" class="dedication-screen">
+        <h1>Solo Tú y Yo</h1>
+        <div class="dedication-content">
+            <p class="romantic-text">
+                Si pudiera pedir un deseo, sería quedarme contigo para siempre. Eres el centro de todo, mi lugar de descanso y mi mayor bendición. Gracias por hacerme el chico más feliz del planeta. Te amo demasiado Daniela, aunque a veces me colmas la paciencia iwiwiwi
+            </p>
+            <div class="dedication-photo">
+                <img src="meandani.jpg" alt="Foto de nosotros" style="max-width: 100%; border-radius: 10px;">
+            </div>
+        </div>
+    </div>
+
+    <div id="backgroundGif" class="background-gif"></div>
+    <div id="backgroundGifText" class="background-gif-text">Ya nada ya, ya sabia, tidis iguilis</div>
+    
+    <!-- Eliminar elemento de audio -->
+    <audio id="errorSound" src="no.mp3"></audio>
+
+    <!-- Contenedor de video -->
+    <div id="videoContainer" class="video-container">
+        <video id="romanticVideo" src="dancing.mp4" controls preload="auto"></video>
+    </div>
+
+    <script>
+        // JavaScript
+        const passwordScreen = document.getElementById('passwordScreen');
+        const romanticScreen = document.getElementById('romanticScreen');
+        const dedicationScreen = document.getElementById('dedicationScreen');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorSound = document.getElementById('errorSound');
+        const greetingText = document.getElementById('greetingText');
+        const proposalText = document.getElementById('proposalText');
+        const thankYouText = document.getElementById('thankYouText');
+        const dedicationBtn = document.getElementById('dedicationBtn');
+        const videoContainer = document.getElementById('videoContainer');
+        const romanticVideo = document.getElementById('romanticVideo');
+    
+        // Agregar función de precarga del video
+document.addEventListener("DOMContentLoaded", function () {
+    romanticVideo.preload = "auto";
+    romanticVideo.load();
+});
+    
+        function checkPassword(correctPassword) {
+            if (correctPassword === '14/02/2023') {
+                passwordScreen.classList.add('hidden');
+                romanticScreen.classList.remove('hidden');
+            } else {
+                errorMessage.classList.remove('hidden');
+                errorSound.play(); // Reproducir sonido de error
+                setTimeout(() => {
+                    errorMessage.classList.add('hidden');
+                }, 2000); // Oculta el mensaje de error después de 2 segundos
+            }
+        }
+
+        const siBtn = document.getElementById('siBtn');
+        const noBtn = document.getElementById('noBtn');
+        const respuesta = document.getElementById('respuesta');
+        let noClickCount = 0;
+        const backgroundGif = document.getElementById('backgroundGif');
+        const backgroundGifText = document.getElementById('backgroundGifText');
+
+        siBtn.addEventListener('click', () => {
+            respuesta.classList.remove('hidden');
+            respuesta.classList.add('fade-in');
+            noBtn.classList.add('hidden-completely');
+            greetingText.classList.add('hidden-completely');
+            proposalText.classList.add('hidden-completely');
+            thankYouText.classList.remove('hidden-completely');
+            dedicationBtn.classList.remove('hidden-completely');
+        });
+
+        noBtn.addEventListener('click', () => {
+            noClickCount++;
+            if (noClickCount >= 5) {
+                backgroundGif.style.display = 'block';
+                backgroundGifText.style.display = 'block';
+                setTimeout(() => {
+                    backgroundGif.style.display = 'none';
+                    backgroundGifText.style.display = 'none';
+                }, 3000); // Muestra el GIF y el texto durante 3 segundos
+                noClickCount = 0; // Reinicia el contador
+            } else {
+                const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+                const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+                noBtn.style.position = 'absolute';
+                noBtn.style.left = `${x}px`;
+                noBtn.style.top = `${y}px`;
+            }
+        });
+
+        dedicationBtn.addEventListener('click', () => {
+            romanticScreen.classList.add('slide-left');
+            dedicationScreen.classList.add('slide-right');
+            romanticVideo.addEventListener('canplaythrough', () => {
+                setTimeout(() => {
+                    dedicationScreen.classList.add('move-left');
+                    videoContainer.classList.add('show'); // Mostrar el contenedor del video
+                    setTimeout(() => {
+                        videoContainer.style.right = 'calc(50% - 550px)'; /* Mover un poco a la derecha */
+                        let volume = 0;
+                        romanticVideo.volume = volume;
+                        romanticVideo.play();
+                        const fadeAudio = setInterval(() => {
+                            if (volume < 1) {
+                                volume += 0.05;
+                                romanticVideo.volume = volume;
+                            } else {
+                                clearInterval(fadeAudio);
+                            }
+                        }, 200);
+                    }, 1000);
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
